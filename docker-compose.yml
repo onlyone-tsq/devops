@@ -1,0 +1,54 @@
+version: "3"
+services:
+
+  nginx:
+    build: ./nginx
+    #restart: always
+    # command: apt-get update && apt-get install -y vim
+    ports:
+      - "80:80"
+    volumes:
+      - ./web:/www/web
+      - ./nginx/conf/:/etc/nginx/
+    depends_on:
+      - php
+
+  php:
+    build: ./php
+    #restart: always
+    # ports:
+    #   - "9000:9000"
+    volumes:
+      - ./web:/www/web
+      - ./php/conf/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./php/conf/php-fpm.d/php-mine.conf:/usr/local/etc/php-fpm.d/php-mine.conf
+    # depends_on:
+    #   - mysql
+    #   - redis    
+
+  # mysql:
+  #   image: mysql:5.6.36
+  #   restart: always
+  #   ports:
+  #     - 3306:3306
+  #   volumes:
+  #     - ./mysql/data:/var/lib/mysql/
+  #     - ./mysql/conf:/etc/mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=taotens
+
+  # adminer:
+  #   image: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+
+  # redis:
+  #   image: redis:5.0-alpine
+  #   restart: always
+  #   command: redis-server /usr/local/etc/redis/redis.conf
+  #   ports:
+  #     - 6379:6379
+  #   volumes:
+  #     - ./redis/conf/redis.conf:/usr/local/etc/redis/redis.conf
+  #     - ./redis/data:/data
